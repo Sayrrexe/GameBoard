@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Подтверждение Email</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        /* Центрирование по горизонтали и вертикали */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;  /* Устанавливаем высоту на весь экран */
+            margin: 0;
+            background-color: #121212;
+        }
+
+        /* Контейнер для страницы подтверждения email */
+        .confirmation-container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 40px;
+            background-color: #1e1e1e;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+
+        .confirmation-container h1 {
+            color: #f3a5ff;
+            margin-bottom: 20px;
+        }
+
+        .confirmation-container p {
+            color: #bbb;
+            margin-bottom: 20px;
+        }
+
+        /* Поля ввода */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            text-align: left;
+            color: #bbb;
+            font-size: 14px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            background-color: #2a2a2a;
+            color: #e0e0e0;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            box-shadow: 0 0 8px #6a0dad;
+        }
+
+        /* Кнопка подтверждения */
+        .btn-confirm {
+            padding: 12px;
+            width: 100%;
+            background: linear-gradient(135deg, #6a0dad, #b066ff);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-size: 16px;
+        }
+
+        .btn-confirm:hover {
+            background: #9151ff;
+        }
+
+        /* Сообщения об ошибках */
+        .error-message {
+            color: #ff6666;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="confirmation-container">
+    <h1>Подтвердите ваш Email</h1>
+    <p>Введите код, который был отправлен на ваш адрес электронной почты.</p>
+    
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="code">Код подтверждения</label>
+            <input type="text" id="code" name="code" required>
+        </div>
+        <button type="submit" class="btn-confirm">Подтвердить Email</button>
+    </form>
+    
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li class="error-message">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>
+
+</body>
+</html>
+

@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="profile-container">
+    <h1>Личный кабинет</h1>
+
+    <div class="profile-wrapper">
+        <!-- Левая часть: Предпросмотр профиля -->
+        <div class="profile-preview">
+            {% if request.user.avatar %}
+            <img src="{{ MEDIA_URL }}{{ user.avatar.url }}" alt="Аватар" class="profile-avatar">
+
+            {% else %}
+                <div class="avatar-placeholder">Пусто</div>
+            {% endif %}
+            
+            <h2>{{ request.user.username }}</h2>
+            <p>{{ request.user.first_name }} {{ request.user.last_name }}</p>
+            <p>Email: {{ request.user.email }}</p>
+
+            <!-- Кнопка подписки на рассылку -->
+            <form method="post" action="{% url 'toggle_subscription' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn-subscription">
+                    {% if request.user.is_subscribed %}
+                        Отписаться от рассылки
+                    {% else %}
+                        Подписаться на рассылку
+                    {% endif %}
+                </button>
+            </form>
+
+            <!-- Кнопка выхода -->
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn-logout">Выйти из аккаунта</button>
+
+            </form>
+        </div>
+
+        <!-- Правая часть: Форма для редактирования профиля -->
+        <div class="profile-edit">
+            <h2>Редактировать профиль</h2>
+            <form method="post" enctype="multipart/form-data" action="{% url 'profile' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="first_name">Имя</label>
+                    <input type="text" id="first_name" name="first_name" value="{{ request.user.first_name }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="last_name">Фамилия</label>
+                    <input type="text" id="last_name" name="last_name" value="{{ request.user.last_name }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" value="{{ request.user.email }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="avatar">Аватар</label>
+                    <input type="file" id="avatar" name="avatar">
+                </div>
+
+                <button type="submit" class="btn-save">Сохранить изменения</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

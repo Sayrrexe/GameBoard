@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация - MMORPG Fan Server</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        /* Основные стили для страницы регистрации */
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .registration-container {
+            background-color: #1e1e1e;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .registration-container h1 {
+            color: #f3a5ff;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            text-align: left;
+            color: #bbb;
+            font-size: 14px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            background-color: #2a2a2a;
+            color: #e0e0e0;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            box-shadow: 0 0 8px #6a0dad;
+        }
+
+        .btn-register {
+            width: 100%;
+            padding: 12px;
+            border-radius: 5px;
+            background: linear-gradient(135deg, #6a0dad, #b066ff);
+            color: #fff;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-register:hover {
+            background: #9151ff;
+        }
+
+        .login-link {
+            display: block;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .login-link a {
+            color: #f3a5ff;
+            text-decoration: none;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* Стиль для сообщения об ошибке */
+        .error {
+            color: #ff6666;
+            font-size: 14px;
+            margin-top: -10px;
+            margin-bottom: 15px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+<div class="registration-container">
+    <h1>Регистрация</h1>
+    <form action="{% url 'register' %}" method="post" onsubmit="return validatePassword()">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="username">Имя пользователя</label>
+            <input type="text" id="username" name="username" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Электронная почта</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Пароль</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <div class="form-group">
+            <label for="confirm_password">Повторите пароль</label>
+            <input type="password" id="confirm_password" name="confirm_password" required>
+            <p id="passwordError" class="error" style="display: none;">Пароли не совпадают</p>
+        </div>
+        <button type="submit" class="btn-register">Зарегистрироваться</button>
+    </form>
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li class="error-message">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <p class="login-link">Уже зарегистрированы? <a href="{% url 'login' %}">Войти</a></p>
+</div>
+
+<script>
+    function validatePassword() {
+        const password = document.getElementById("password").value;
+        const confirmPassword = document.getElementById("confirm_password").value;
+        const error = document.getElementById("passwordError");
+
+        if (password !== confirmPassword) {
+            error.style.display = "block";
+            return false;
+        } else {
+            error.style.display = "none";
+            return true;
+        }
+    }
+</script>
+
+</body>
+</html>

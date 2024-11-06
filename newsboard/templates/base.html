@@ -16,23 +16,48 @@
             <a href="{% url 'index' %}">MMORPG Fan Server</a>
         </div>
         <nav class="nav-links">
-            <a href="#">Категории</a>
             <a href="#">Поиск</a>
         </nav>
         <div class="auth-buttons">
             {% if user.is_authenticated %}
-                <a href="#" class="btn">Личный кабинет</a>
+                <a href="{% url 'profile' %}" class="btn">Личный кабинет</a>
             {% else %}
-                <a href="#" class="btn">Вход</a>
-                <a href="#" class="btn btn-register">Регистрация</a>
+                <a href="{% url 'login' %}" class="btn">Вход</a>
+                <a href="{% url 'register' %}" class="btn btn-register">Регистрация</a>
             {% endif %}
         </div>
     </header>
 
     <!-- Main Content -->
     <main>
-        {% block content %}{% endblock %}
-    </main>
+        {% if messages %}
+        <div class="notifications-container">
+            {% for message in messages %}
+                <div class="notification notification-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
 
+    <!-- Основной контент -->
+    {% block content %}{% endblock %}
+    </main>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const notifications = document.querySelectorAll('.notification');
+            notifications.forEach(notification => {
+                // Показываем уведомление
+                notification.classList.add('show');
+                
+                // Скрываем через 5 секунд
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                    notification.classList.add('hide');
+                }, 5000);
+            });
+        });
+    </script>
 </body>
 </html>
