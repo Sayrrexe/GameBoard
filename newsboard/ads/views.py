@@ -1,6 +1,9 @@
 from django.shortcuts import render, redirect
+from django.views.generic import DetailView
 from django.contrib import messages
 from django.contrib.auth import login, logout
+
+
 from .models import Ad, Category, CustomUser
 
 def index(request):
@@ -8,11 +11,11 @@ def index(request):
     if category_name:
         try:
             category = Category.objects.get(name=category_name)
-            ads = Ad.objects.filter(category=category)
+            ads = Ad.objects.filter(category=category, status='published')
         except Category.DoesNotExist:
             ads = Ad.objects.none()  # Если категории нет, не показывать объявления
     else:
-        ads = Ad.objects.all()
+        ads = Ad.objects.filter(status='published')
     categories = Category.objects.all()
     return render(request, 'ads/index.html', {'ads': ads, 'categories': categories})
 
@@ -97,3 +100,13 @@ def change_newsletter(request):
     else:
         messages.info(request, "Вы отписались от рассылки")
     return redirect('profile')  
+
+class AdDetailView(DetailView):
+    model = Ad
+    template_name = "ads/ad_detail.html"
+    context_object_name = 'ad'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Добавьте любые дополнительные данные в контекст, если необходимо
+        return context

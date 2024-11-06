@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="ad-detail-container">
+    <h1>{{ ad.title }}</h1>
+    <p class="ad-content">{{ ad.description }}</p>
+    <hr>
+    <div class="ad-info">
+        <span class="category">Категория: {{ ad.category.name }}</span>
+        <span class="date">Создано: {{ ad.created_at|date:"d M Y" }}</span>
+    </div>
+    <div class="ad-author">
+        <span>Автор: {{ ad.author.username }}</span>
+    </div>
+
+    <!-- Проверка, является ли текущий пользователь автором объявления -->
+    {% if request.user == ad.author %}
+        <a href="#" class="btn btn-primary">Изменить</a>
+    {% else %}
+        <a href="#" class="btn btn-primary">Откликнуться</a>
+    {% endif %}
+</div>
+{% endblock %}
+

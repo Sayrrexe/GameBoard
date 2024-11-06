@@ -24,10 +24,25 @@
                     <h2>{{ ad.title }}</h2>
                     <p>{{ ad.description }}</p>
                     <span class="category">{{ ad.category }}</span>
-                    <a href="#" class="btn btn-primary">Подробнее</a>
+    
+                    <div class="ad-footer">
+                        {% if ad.author.avatar %}
+                            <img src="{{ ad.author.avatar.url }}" alt="" class="user-avatar">
+                        {% else %}
+                            <span class="username">Создал: {{ ad.author.username }}</span>
+                        {% endif %}
+                        
+                        <span class="username">{{ ad.author.username }}</span>
+                    </div>
+    
+                    <!-- Перемещаем кнопку сюда -->
+                    <a href="#" class="btn btn-primary full-width-btn">Подробнее</a>
                 </div>
             {% endfor %}
         </div>
     </section>
+    
+    
+    
 </div>
 {% endblock %}

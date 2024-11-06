@@ -62,7 +62,25 @@ body {
 .ads-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr); /* Три карточки в ряд */
-    gap: 80px 30px; /* 20px по высоте (между строками) и 30px по ширине (между колонками) */
+    gap: 10px 30px; 
+}
+
+.ad-footer {
+    display: flex;
+    align-items: center;
+    margin-top: 15px; 
+}
+
+.user-avatar {
+    width: 30px; 
+    height: 30px; 
+    border-radius: 50%; 
+    margin-right: 10px; 
+}
+
+.username {
+    color: #bbb; 
+    font-size: 14px; 
 }
 
 
@@ -73,7 +91,15 @@ body {
     border-radius: 8px;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3), 0 0 8px #6a0dad;
     transition: transform 0.3s, box-shadow 0.3s;
-    height: 100%;
+    height: 80%;
+    margin-bottom: 20px; /* Убедитесь, что есть отступ между карточками */
+}
+
+.full-width-btn {
+    display: block; /* Кнопка будет блочным элементом */
+    width: calc(100% - 20px); /* Полная ширина с отступами */
+    margin: 10px auto 10px; /* Отступ сверху 10px и снизу 10px */
+    padding: 10px; /* Внутренние отступы для кнопки */
 }
 
 .ad-card:hover {
@@ -379,4 +405,58 @@ body {
     opacity: 0;
     transform: translateY(-20px);
     pointer-events: none;
+}
+
+
+.ad-detail-container {
+    max-width: 800px; /* Максимальная ширина контейнера */
+    margin: 100px auto; /* Центрирование контейнера */
+    padding: 20px;
+    background-color: rgba(30, 30, 30, 0.9); /* Полупрозрачный фон */
+    border-radius: 8px; /* Закруглённые углы */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7); /* Тень */
+    color: #e0e0e0; /* Цвет текста */
+    text-align: center; /* Выравнивание текста по центру */
+}
+
+.ad-detail-container h1 {
+    color: #f3a5ff; /* Цвет заголовка */
+    margin-bottom: 20px; /* Отступ снизу */
+    font-size: 28px; /* Увеличенный размер шрифта */
+}
+
+.ad-content {
+    font-size: 18px; /* Размер текста контента */
+    margin-bottom: 20px; /* Отступ снизу */
+}
+
+.ad-info {
+    margin-bottom: 15px; /* Отступ снизу */
+}
+
+.ad-info span {
+    display: block; /* Отображение как блочный элемент для лучшего выравнивания */
+    color: #bbb; /* Цвет текста для информации */
+    margin-top: 5px; /* Отступ сверху для отделения */
+}
+
+.ad-author {
+    margin-bottom: 20px; /* Отступ снизу для автора */
+    color: #bbb; /* Цвет текста для автора */
+}
+
+.btn {
+    padding: 10px 20px; /* Внутренние отступы */
+    background: linear-gradient(135deg, #6a0dad, #b066ff);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+    align-content: center;
+    width: 70%; /* Кнопка занимает всю ширину */
+}
+
+.btn:hover {
+    background: #9151ff; /* Эффект при наведении */
 }
