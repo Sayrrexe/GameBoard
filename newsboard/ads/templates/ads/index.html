@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Главная{% endblock %}
+
+{% block content %}
+<div class="main-container">
+    <!-- Боковая панель с категориями -->
+    <aside class="sidebar">
+        <h2>Категории</h2>
+        <ul class="category-list">
+            <li><a href="{% url 'index' %}">Все</a></li>
+            {% for category in categories %}
+                <li><a href="{% url 'index' %}?category={{ category.name }}">{{ category.name }}</a></li>
+            {% endfor %}
+        </ul>
+    </aside>
+
+    <!-- Секция с объявлениями -->
+    <section class="ads-section">
+        <h1>Объявления</h1>
+        <div class="ads-grid">
+            {% for ad in ads %}
+                <div class="ad-card">
+                    <h2>{{ ad.title }}</h2>
+                    <p>{{ ad.description }}</p>
+                    <span class="category">{{ ad.category }}</span>
+                    <a href="#" class="btn btn-primary">Подробнее</a>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+</div>
+{% endblock %}

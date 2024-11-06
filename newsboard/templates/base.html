@@ -1,0 +1,38 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}MMORPG Fan Server{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="navbar">
+        <div class="logo">
+            <a href="{% url 'index' %}">MMORPG Fan Server</a>
+        </div>
+        <nav class="nav-links">
+            <a href="#">Категории</a>
+            <a href="#">Поиск</a>
+        </nav>
+        <div class="auth-buttons">
+            {% if user.is_authenticated %}
+                <a href="#" class="btn">Личный кабинет</a>
+            {% else %}
+                <a href="#" class="btn">Вход</a>
+                <a href="#" class="btn btn-register">Регистрация</a>
+            {% endif %}
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+</body>
+</html>
