@@ -543,3 +543,55 @@ body {
 .ad-category strong {
     color: #f3a5ff;
 }
+
+/* Контейнер для списка объявлений пользователя */
+.user-ads-list {
+    display: block;  /* Теперь объявления располагаются в столбик */
+    margin-top: 20px;
+}
+
+/* Карточка объявления пользователя */
+.user-ad-card {
+    background: #1e1e1e;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    padding: 15px;
+    margin-bottom: 20px;  /* Отступ между карточками */
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.user-ad-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5), 0 0 10px #6a0dad;
+}
+
+/* Заголовок объявления */
+.user-ad-card h3 {
+    color: #f3a5ff;
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+/* Категория и статус */
+.user-ad-card .category,
+.user-ad-card .status {
+    display: block;
+    font-size: 12px;
+    color: #aaa;
+    margin-bottom: 5px;
+}
+
+/* Кнопка редактирования для карточки */
+.btn.small-btn {
+    padding: 8px 12px;
+    background: linear-gradient(135deg, #6a0dad, #b066ff);
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn.small-btn:hover {
+    background: #9151ff;
+}

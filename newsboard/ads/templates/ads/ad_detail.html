@@ -5,16 +5,26 @@
     <div class="ad-detail">
         <h1>{{ ad.title }}</h1>
         <p class="ad-meta">
-            Опубликовано: {{ ad.created_at|date:"d M Y" }} | Автор: {{ ad.author.username }} </br>
+            Опубликовано: {{ ad.created_at|date:"d M Y" }} | Автор: {{ ad.author.username }}<br>
             <strong>Категория:</strong> {{ ad.category }}
         </p>
 
         <div class="ad-content">
-            {{ ad.description|safe }}  <!-- Выводим полное описание с поддержкой HTML -->
+            {{ ad.description|safe }}  
         </div>
 
-        <div class="ad-category">
-            
+        <div class="ad-actions">
+            {% if user.is_authenticated %}
+                {% if ad.author == user %}
+                    
+                    <a href="{% url 'create' %}?edit={{ad.id}}" class="btn btn-primary">Редактировать</a>
+                {% else %}
+                    
+                    <a href="#" class="btn btn-secondary">Откликнуться</a>
+                {% endif %}
+            {% else %}
+                <p>Для взаимодействия с объявлением <a href="{% url 'login' %}">войдите в систему</a>.</p>
+            {% endif %}
         </div>
     </div>
 </div>

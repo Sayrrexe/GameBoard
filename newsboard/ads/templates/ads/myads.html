@@ -8,39 +8,25 @@
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.media }}
-        {{ form.as_p }} 
+        {{ form.as_p }}
         <button type="submit" class="btn btn-primary">
             {% if ad_to_edit %} Сохранить изменения {% else %} Создать объявление {% endif %}
         </button>
     </form>
     
     <hr>
-    <div class="ads-list">
-        <div class="ads-grid">
-            {% for ad in ads %}
-                <div class="ad-card">
-                    <h2>{{ ad.title }}</h2>
-                    <p>{{ ad.description|safe }}</p>  
-                    <span class="category">{{ ad.category }}</span>
-                    <span class="status">{{ ad.get_status_display }}</span>
-                    
-                    {% if ad.media.exists %}
-                        <div class="media-gallery">
-                            {% for media in ad.media.all %}
-                                {% if media.image %}
-                                    <img src="{{ media.image.url }}" alt="Фото объявления">
-                                {% elif media.video %}
-                                    <video controls>
-                                        <source src="{{ media.video.url }}" type="video/mp4">
-                                    </video>
-                                {% endif %}
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                    <a href="?edit={{ ad.id }}" class="btn btn-secondary">Редактировать</a>
-                </div>
-            {% endfor %}
-        </div>
+    
+    <h2>Мои объявления</h2>
+    <div class="user-ads-list">
+        {% for ad in ads %}
+            <div class="user-ad-card">
+                <h3>{{ ad.title|truncatechars:20 }}</h3>
+                <p>{{ ad.description|truncatewords:10|striptags }}</p>
+                <span class="category">{{ ad.category }}</span>
+                <span class="status">{{ ad.get_status_display }}</span>
+                <a href="?edit={{ ad.id }}" class="btn btn-secondary small-btn">Редактировать</a>
+            </div>
+        {% endfor %}
     </div>
 </div>
 {% endblock %}
