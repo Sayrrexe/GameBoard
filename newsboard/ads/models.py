@@ -50,7 +50,7 @@ class Category(models.Model):
 
 class Ad(models.Model):
     title = models.CharField(max_length=200)
-    description = CKEditor5Field()
+    description = CKEditor5Field('Content', config_name='default')
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)

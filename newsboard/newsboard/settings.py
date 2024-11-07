@@ -121,26 +121,35 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
-CKEDITOR_UPLOAD_PATH = 'uploads/'
+CKEDITOR_5_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+CKEDITOR_5_UPLOADS = 'uploads/' 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / "static"]
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
-# settings.py
-# settings.py
 CKEDITOR_5_CONFIGS = {
     'default': {
-        'toolbar': 'full',
-        'height': 300,
-        'width': '100%',
-        'extraPlugins': ','.join([
-            'uploadimage',  # Для загрузки изображений
-            'embed',        # Для вставки видео
-            'autoembed',
-            'embedsemantic',
-        ]),
-    },
+        'toolbar': [
+            'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote',
+            'imageUpload', 'mediaEmbed', 'undo', 'redo'
+        ],
+        'image': {
+            'toolbar': [
+                'imageTextAlternative', '|',
+                'imageStyle:alignLeft', 'imageStyle:alignCenter', 'imageStyle:alignRight', '|',
+                'imageStyle:full', 'imageStyle:side'
+            ],
+            'styles': [
+                'full', 'side', 'alignLeft', 'alignCenter', 'alignRight'
+            ]
+        },
+        'mediaEmbed': {
+            'previewsInData': True
+        },
+        'language': 'ru',
+    }
 }
+
 
 
 
