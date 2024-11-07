@@ -27,6 +27,7 @@
                     <div class="ad-footer">
                         {% if ad.author.avatar %}
                             <img src="{{ ad.author.avatar.url }}" alt="" class="user-avatar">
+                            <p>{{ ad.author.username }}</p>
                         {% else %}
                             <span class="username">Создал: {{ ad.author.username }}</span>
                         {% endif %}

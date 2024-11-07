@@ -121,12 +121,12 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
-CKEDITOR_5_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
-CKEDITOR_5_UPLOADS = 'uploads/' 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / "static"]
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
+
 CKEDITOR_5_CONFIGS = {
     'default': {
         'toolbar': [
@@ -149,6 +149,11 @@ CKEDITOR_5_CONFIGS = {
         'language': 'ru',
     }
 }
+CKEDITOR_5_FILE_UPLOAD_PERMISSION = "authenticated"
+CKEDITOR_5_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+CKEDITOR_5_UPLOADS = 'uploads/'
+
+
 
 
 
