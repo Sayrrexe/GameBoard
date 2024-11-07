@@ -8,8 +8,7 @@
         <!-- Левая часть: Предпросмотр профиля -->
         <div class="profile-preview">
             {% if request.user.avatar %}
-            <img src="{{ MEDIA_URL }}{{ user.avatar.url }}" alt="Аватар" class="profile-avatar">
-
+                <img src="{{ MEDIA_URL }}{{ request.user.avatar.url }}" alt="Аватар" class="profile-avatar">
             {% else %}
                 <div class="avatar-placeholder">Пусто</div>
             {% endif %}
@@ -34,7 +33,6 @@
             <form method="post" action="{% url 'logout' %}">
                 {% csrf_token %}
                 <button type="submit" class="btn-logout">Выйти из аккаунта</button>
-
             </form>
         </div>
 
@@ -65,6 +63,14 @@
 
                 <button type="submit" class="btn-save">Сохранить изменения</button>
             </form>
+        </div>
+    </div>
+
+    <div class="action-container">
+        <h2>Управление объявлениями</h2>
+        <div class="action-buttons">
+            <a href="{% url 'create' %}" class="btn btn-secondary">Мои объявления</a>
+            <a href="#" class="btn btn-secondary">Мои отклики</a>
         </div>
     </div>
 </div>

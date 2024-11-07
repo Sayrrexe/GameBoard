@@ -1,7 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 import os
-from django.utils.crypto import get_random_string
+from ckeditor_uploader.fields import RichTextUploadingField
 
 class CustomUser(AbstractUser):
     info = models.TextField(max_length=255, blank=True, null=True)
@@ -24,7 +24,7 @@ class CustomUser(AbstractUser):
         # Генерация уникального имени файла, если загружается новый аватар
         if self.avatar:
             ext = os.path.splitext(self.avatar.name)[1]  # Получаем расширение файла
-            self.avatar.name = f'avatar_{self.pk}_{get_random_string(8)}{ext}'
+            self.avatar.name = f'avatar_{self.pk}{ext}'
         
         # Удаляем старый файл, если он существует и загружается новый
         if old_avatar and old_avatar != self.avatar:
@@ -49,7 +49,7 @@ class Category(models.Model):
 
 class Ad(models.Model):
     title = models.CharField(max_length=200)
-    description = models.TextField()
+    description = RichTextUploadingField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -63,6 +63,8 @@ class Ad(models.Model):
         ordering = ['-created_at']
         verbose_name = 'Объявление'
         verbose_name_plural = 'Объявления'
+        
+
     
 class Response(models.Model):
     ad = models.ForeignKey(Ad, on_delete=models.CASCADE, related_name='responses')

@@ -35,77 +35,155 @@ body {
     color: #f3a5ff;
 }
 
-.auth-buttons .btn {
-    color: #fff;
-    text-decoration: none;
-    margin-left: 15px;
-    padding: 8px 16px;
-    border-radius: 5px;
-    transition: background 0.3s;
-}
-
-.btn-register {
+/* Стили для кнопок */
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
     background: linear-gradient(135deg, #6a0dad, #b066ff);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.3s, transform 0.2s;
 }
 
-.auth-buttons .btn:hover {
-    background-color: #9151ff;
+.btn:hover {
+    background: #9151ff;
+    transform: scale(1.05);
 }
 
-/* Стили секции с объявлениями */
+.btn-primary {
+    width: calc(100% - 20px);
+    margin: 10px auto;
+}
+
+.btn-secondary {
+    margin-top: 10px;
+}
+
+.auth-buttons .btn {
+    margin-left: 15px;
+}
+
+/* Стили форм */
+.form-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #2a2a2a;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    text-align: center;
+}
+
+.form-container h2 {
+    color: #f3a5ff;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    color: #bbb;
+    margin-bottom: 5px;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="file"],
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background-color: #333;
+    color: #e0e0e0;
+    font-size: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    background-color: #444;
+    transform: scale(1.02);
+    outline: none;
+}
+
+/* Стили карточек объявлений */
 .ads-section {
     padding: 30px;
     max-width: 1200px;
-    margin: auto;
+    margin: 0 auto;
 }
 
 .ads-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* Три карточки в ряд */
-    gap: 10px 30px; 
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
 }
 
-.ad-footer {
-    display: flex;
-    align-items: center;
-    margin-top: 15px; 
-}
-
-.user-avatar {
-    width: 30px; 
-    height: 30px; 
-    border-radius: 50%; 
-    margin-right: 10px; 
-}
-
-.username {
-    color: #bbb; 
-    font-size: 14px; 
-}
-
-
-/* Карточка объявления с эффектом */
 .ad-card {
     background: linear-gradient(135deg, #232323, #1e1e1e);
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3), 0 0 8px #6a0dad;
     transition: transform 0.3s, box-shadow 0.3s;
-    height: 80%;
-    margin-bottom: 20px; /* Убедитесь, что есть отступ между карточками */
+    text-align: center;
+    position: relative; /* Для предотвращения выхода кнопок за пределы */
 }
 
-.full-width-btn {
-    display: block; /* Кнопка будет блочным элементом */
-    width: calc(100% - 20px); /* Полная ширина с отступами */
-    margin: 10px auto 10px; /* Отступ сверху 10px и снизу 10px */
-    padding: 10px; /* Внутренние отступы для кнопки */
+.ad-card .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #6a0dad, #b066ff);
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+    text-align: center;
+    width: auto;
+    margin-top: 15px;
+}
+
+.ad-card .btn:hover {
+    background: #9151ff;
+    transform: scale(1.05);
 }
 
 .ad-card:hover {
     transform: scale(1.05);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4), 0 0 15px #b066ff;
 }
+
+@media (max-width: 992px) {
+    .ads-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .ad-card .btn {
+        width: auto;
+    }
+}
+
+@media (max-width: 600px) {
+    .ads-grid {
+        grid-template-columns: 1fr;
+    }
+    .ad-card .btn {
+        width: 100%;
+    }
+}
+
+
 
 .ad-card h2 {
     color: #f3a5ff;
@@ -121,6 +199,12 @@ body {
     margin-bottom: 10px;
 }
 
+.ad-footer {
+    display: flex;
+    align-items: center;
+    margin-top: 15px;
+}
+
 .category {
     display: inline-block;
     padding: 5px 10px;
@@ -130,50 +214,82 @@ body {
     font-size: 12px;
 }
 
-.btn-primary {
-    display: inline-block;
-    padding: 8px 12px;
-    background: linear-gradient(135deg, #6a0dad, #b066ff);
-    color: #fff;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: background 0.3s;
+/* Пользовательская информация */
+.profile-container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #1e1e1e;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    color: #e0e0e0;
 }
 
-.btn-primary:hover {
-    background: #9151ff;
+.profile-container h1 {
+    color: #f3a5ff;
+    text-align: center;
+    margin-bottom: 30px;
 }
 
-
-/* Основной контейнер для боковой панели и объявлений */
-.main-container {
+.profile-wrapper {
     display: flex;
     gap: 20px;
+}
+
+/* Левая часть профиля */
+.profile-preview {
+    flex: 1;
+    text-align: center;
+    background-color: #2a2a2a;
+    padding: 20px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile-preview img.profile-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.avatar-placeholder {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #aaa;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.profile-edit {
+    flex: 2;
+    background-color: #2a2a2a;
+    padding: 20px;
+    border-radius: 8px;
 }
 
 /* Боковая панель */
-/* Основной контейнер */
-.main-container {
-    display: flex;
-    gap: 20px;
-}
-
-/* Боковая панель с вертикальным центрированием */
 .sidebar {
-    width: 200px;                   /* Фиксированная ширина */
+    width: 200px;
     background-color: #1e1e1e;
     padding: 20px;
     border-radius: 8px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    position: fixed;               /* Фиксируем боковую панель */
-    top: 50%;                      /* Центрируем по высоте */
-    transform: translateY(-50%);   /* Сдвиг для точного центрирования */
-    left: 0;                       /* Прикрепляем к левой части экрана */
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
 }
-
-
 
 .sidebar h2 {
     color: #f3a5ff;
@@ -197,166 +313,19 @@ body {
     color: #bbb;
     text-decoration: none;
     padding: 10px 15px;
-    background-color: #292929; /* Фон для выделения */
+    background-color: #292929;
     border-radius: 6px;
     display: block;
     transition: background 0.3s, color 0.3s;
 }
 
 .category-list li a:hover {
-    background-color: #3d3d3d; /* Более светлый фон при наведении */
+    background-color: #3d3d3d;
     color: #f3a5ff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Лёгкая тень для выделения */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-/* Объявления */
-.ads-section {
-    flex: 1;
-    padding: 20px;
-}
-
-.ads-section h1{
-    text-align: center; 
-    font-size: 25px;
-}
-
-
-
-.profile-container {
-    max-width: 800px;
-    margin: 50px auto;
-    padding: 20px;
-    background-color: #1e1e1e;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-    color: #e0e0e0;
-}
-
-.profile-container h1 {
-    color: #f3a5ff;
-    text-align: center;
-    margin-bottom: 30px;
-}
-
-/* Wrapper для разделения профиля на 2 части */
-.profile-wrapper {
-    display: flex;
-    gap: 20px;
-}
-
-/* Левая часть: Предпросмотр профиля */
-/* Левая часть: Предпросмотр профиля */
-.profile-preview {
-    flex: 1;
-    text-align: center;
-    background-color: #2a2a2a;
-    padding: 20px;
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    align-items: center; 
-}
-
-/* Стиль для изображения аватара */
-.profile-preview img.profile-avatar {
-    width: 100px;                
-    height: 100px;               
-    border-radius: 50%;          
-    object-fit: cover;           
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
-}
-
-/* Стиль для рамки "Пусто", когда аватара нет */
-.avatar-placeholder {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    background-color: #333;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #aaa;
-    font-size: 14px;
-    margin-bottom: 15px;
-}
-
-.profile-preview h2 {
-    color: #f3a5ff;
-    margin-bottom: 10px;
-}
-
-.profile-preview p {
-    color: #bbb;
-}
-
-/* Правая часть: Форма редактирования */
-.profile-edit {
-    flex: 2;
-    background-color: #2a2a2a;
-    padding: 20px;
-    border-radius: 8px;
-}
-
-.profile-edit h2 {
-    color: #f3a5ff;
-    margin-bottom: 20px;
-}
-
-/* Формы и кнопки */
-.form-group {
-    margin-bottom: 15px;
-    text-align: left;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-    color: #bbb;
-}
-
-.form-group input[type="text"],
-.form-group input[type="email"],
-.form-group input[type="file"] {
-    width: 100%;
-    padding: 10px;
-    border-radius: 5px;
-    background-color: #333;
-    border: none;
-    color: #e0e0e0;
-}
-
-.btn-save, .btn-subscription, .btn-logout {
-    padding: 10px 20px;
-    margin-top: 10px;
-    background: linear-gradient(135deg, #6a0dad, #b066ff);
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.3s;
-    width: 100%;
-}
-
-.btn-save:hover, .btn-subscription:hover, .btn-logout:hover {
-    background: #9151ff;
-}
-
-.btn-logout {
-    display: inline-block;
-    padding: 10px 20px;
-    background: linear-gradient(135deg, #6a0dad, #b066ff);
-    color: white;
-    border-radius: 5px;
-    text-decoration: none;
-    transition: background 0.3s;
-}
-
-.btn-logout:hover {
-    background: #9151ff;
-}
-
-
-/* Контейнер для всех уведомлений */
+/* Уведомления */
 .notifications-container {
     position: relative;
     top: 10px;
@@ -366,7 +335,6 @@ body {
     z-index: 1000;
 }
 
-/* Стили для каждого уведомления */
 .notification {
     padding: 15px;
     border-radius: 8px;
@@ -378,7 +346,6 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Типы уведомлений */
 .notification-info {
     background-color: #2a9df4;
 }
@@ -395,7 +362,6 @@ body {
     background-color: #f44336;
 }
 
-/* Анимация появления и исчезновения */
 .notification.show {
     opacity: 1;
     transform: translateY(0);
@@ -407,56 +373,120 @@ body {
     pointer-events: none;
 }
 
-
-.ad-detail-container {
-    max-width: 800px; /* Максимальная ширина контейнера */
-    margin: 100px auto; /* Центрирование контейнера */
+/* Основной контейнер страницы управления объявлениями */
+.manage-ads-container {
+    max-width: 800px;
+    margin: 50px auto;
     padding: 20px;
-    background-color: rgba(30, 30, 30, 0.9); /* Полупрозрачный фон */
-    border-radius: 8px; /* Закруглённые углы */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7); /* Тень */
-    color: #e0e0e0; /* Цвет текста */
-    text-align: center; /* Выравнивание текста по центру */
+    text-align: center;
 }
 
-.ad-detail-container h1 {
-    color: #f3a5ff; /* Цвет заголовка */
-    margin-bottom: 20px; /* Отступ снизу */
-    font-size: 28px; /* Увеличенный размер шрифта */
+/* Заголовок страницы */
+.manage-ads-container h1 {
+    font-size: 28px;
+    color: #f3a5ff;
+    margin-bottom: 30px;
 }
 
-.ad-content {
-    font-size: 18px; /* Размер текста контента */
-    margin-bottom: 20px; /* Отступ снизу */
+/* Форма создания нового объявления */
+.ad-form-container {
+    background-color: #2a2a2a;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    margin-bottom: 30px;
 }
 
-.ad-info {
-    margin-bottom: 15px; /* Отступ снизу */
+.ad-form-container h2 {
+    font-size: 20px;
+    color: #f3a5ff;
+    margin-bottom: 15px;
 }
 
-.ad-info span {
-    display: block; /* Отображение как блочный элемент для лучшего выравнивания */
-    color: #bbb; /* Цвет текста для информации */
-    margin-top: 5px; /* Отступ сверху для отделения */
+.form-group {
+    margin-bottom: 15px;
+    text-align: left;
 }
 
-.ad-author {
-    margin-bottom: 20px; /* Отступ снизу для автора */
-    color: #bbb; /* Цвет текста для автора */
+.form-group label {
+    display: block;
+    color: #bbb;
+    margin-bottom: 5px;
 }
 
-.btn {
-    padding: 10px 20px; /* Внутренние отступы */
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #333;
+    color: #e0e0e0;
+    border: none;
+}
+
+.btn-primary {
+    margin-top: 15px;
+    padding: 10px 20px;
     background: linear-gradient(135deg, #6a0dad, #b066ff);
     color: white;
-    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    transition: background 0.3s;
+}
+
+.btn-primary:hover {
+    background: #9151ff;
+}
+
+/* Разделительная линия */
+.divider {
+    border: 0;
+    height: 1px;
+    background: #444;
+    margin: 30px 0;
+}
+
+/* Список объявлений пользователя */
+.user-ads-section h2 {
+    font-size: 22px;
+    color: #f3a5ff;
+    margin-bottom: 20px;
+}
+
+/* Карточка объявления */
+.ad-card h3 {
+    color: #f3a5ff;
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.ad-card p {
+    color: #bbb;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.category,
+.status {
+    display: block;
+    font-size: 12px;
+    color: #aaa;
+    margin-bottom: 5px;
+}
+
+.btn-secondary {
+    display: inline-block;
+    padding: 8px 16px;
+    background: linear-gradient(135deg, #6a0dad, #b066ff);
+    color: white;
     border-radius: 5px;
     cursor: pointer;
     transition: background 0.3s;
-    align-content: center;
-    width: 70%; /* Кнопка занимает всю ширину */
+    text-align: center;
 }
 
-.btn:hover {
-    background: #9151ff; /* Эффект при наведении */
+.btn-secondary:hover {
+    background: #9151ff;
 }

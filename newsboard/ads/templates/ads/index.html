@@ -21,10 +21,9 @@
         <div class="ads-grid">
             {% for ad in ads %}
                 <div class="ad-card">
-                    <h2>{{ ad.title }}</h2>
-                    <p>{{ ad.description }}</p>
+                    <h2>{{ ad.title|truncatechars:30 }}</h2>
+                    <p>{{ ad.description|truncatewords:15|safe }}</p>
                     <span class="category">{{ ad.category }}</span>
-    
                     <div class="ad-footer">
                         {% if ad.author.avatar %}
                             <img src="{{ ad.author.avatar.url }}" alt="" class="user-avatar">
@@ -34,15 +33,11 @@
                         
                         <span class="username">{{ ad.author.username }}</span>
                     </div>
-    
-                    <!-- Перемещаем кнопку сюда -->
-                    <a href="#" class="btn btn-primary full-width-btn">Подробнее</a>
+
+                    <a href="/ad/{{ ad.id }}" class="btn btn-primary full-width-btn">Подробнее</a>
                 </div>
             {% endfor %}
         </div>
     </section>
-    
-    
-    
 </div>
 {% endblock %}
