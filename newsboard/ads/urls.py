@@ -13,5 +13,6 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('change-newsletter-status/', views.change_newsletter, name='toggle_subscription'),
     path('ad/<int:pk>/', AdDetailView.as_view(), name='ad_detail'),
-    path('create/', views.createView, name='create')
+    path('create/', views.createView, name='create'),
+    path('ad/<int:ad_id>/respond/', views.submit_response, name='submit_response'),  
 ]

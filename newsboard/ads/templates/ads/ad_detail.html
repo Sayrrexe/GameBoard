@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% block title %}{{ ad.title }} - MMORPG Fan Server{% endblock %}
+
 {% block content %}
 <div class="main-container">
     <div class="ad-detail">
@@ -16,11 +18,9 @@
         <div class="ad-actions">
             {% if user.is_authenticated %}
                 {% if ad.author == user %}
-                    
-                    <a href="{% url 'create' %}?edit={{ad.id}}" class="btn btn-primary">Редактировать</a>
+                    <a href="{% url 'create' %}?edit={{ ad.id }}" class="btn btn-primary">Редактировать</a>
                 {% else %}
-                    
-                    <a href="#" class="btn btn-secondary">Откликнуться</a>
+                    <button id="respondButton" class="btn btn-secondary">Откликнуться</button>
                 {% endif %}
             {% else %}
                 <p>Для взаимодействия с объявлением <a href="{% url 'login' %}">войдите в систему</a>.</p>
@@ -28,4 +28,64 @@
         </div>
     </div>
 </div>
+
+<!-- Модальное окно для отклика -->
+<div id="responseModal" class="modal">
+    <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <h2>Отклик на объявление</h2>
+        <form id="responseForm" method="POST" action="{% url 'submit_response' ad.id %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="id_content">Ваш отклик:</label>
+                {{ form.content }}
+                {% if form.content.errors %}
+                    <div class="error">
+                        {{ form.content.errors }}
+                    </div>
+                {% endif %}
+            </div>
+            <button type="submit" class="btn btn-primary">Отправить</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Получаем модальное окно
+var modal = document.getElementById("responseModal");
+
+// Получаем кнопку, которая открывает модальное окно
+var btn = document.getElementById("respondButton");
+
+// Получаем элемент <span>, который закрывает модальное окно
+var span = document.getElementsByClassName("close-button")[0];
+
+// Когда пользователь нажимает на кнопку, открываем модальное окно
+btn.onclick = function() {
+    modal.style.display = "block";
+}
+
+// Когда пользователь нажимает на <span> (x), закрываем модальное окно
+span.onclick = function() {
+    modal.style.display = "none";
+}
+
+// Когда пользователь нажимает в любом месте за пределами модального окна, закрываем его
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+
+// Валидация формы перед отправкой
+document.getElementById("responseForm").addEventListener("submit", function(event){
+    var content = document.getElementById("id_content").value.trim();
+    if(content === "") {
+        alert("Пожалуйста, введите ваш отклик.");
+        event.preventDefault();
+    }
+});
+</script>
 {% endblock %}

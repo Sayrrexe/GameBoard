@@ -3,12 +3,13 @@ from django.views.generic import DetailView
 from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
-
+from django.core.mail import send_mail
+from django.conf import settings
 
 from .utils import create_confirmation_code
-from .forms import AdForm
-from .models import Ad, Category, CustomUser
-from .models import ConfirmationCode
+from .forms import AdForm, ResponseForm
+from .models import Ad, Category, CustomUser, Response, ConfirmationCode
+
 
 def index(request):
     category_name = request.GET.get('category')
@@ -119,6 +120,11 @@ class AdDetailView(DetailView):
     template_name = 'ads/ad_detail.html'  
     context_object_name = 'ad'
     
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = ResponseForm()
+        return context
+    
 @login_required
 def createView(request):
     ad_id = request.GET.get('edit')
@@ -145,3 +151,35 @@ def createView(request):
         'ad_to_edit': ad_to_edit,
     }
     return render(request, 'ads/myads.html', context)
+
+
+@login_required
+def submit_response(request, ad_id):
+    ad = get_object_or_404(Ad, id=ad_id, status='published')
+    
+    if request.method == 'POST':
+        form = ResponseForm(request.POST)
+        if form.is_valid():
+            response = form.save(commit=False)
+            response.ad = ad
+            response.sender = request.user
+            response.status = 'pending'
+            response.save()
+            
+            # Отправка уведомления автору объявления
+            send_mail(
+                subject='Новый отклик на ваше объявление',
+                message=f'Пользователь {request.user.username} оставил отклик на ваше объявление "{ad.title}".\n\nТекст отклика:\n{response.content}',
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[ad.author.email],
+                fail_silently=False,
+            )
+            
+            messages.success(request, "Ваш отклик успешно отправлен!")
+            return redirect('ad_detail', pk=ad.id)
+        else:
+            messages.error(request, "Пожалуйста, исправьте ошибки в форме.")
+    else:
+        form = ResponseForm()
+    
+    return render(request, 'ads/submit_response.html', {'form': form, 'ad': ad})

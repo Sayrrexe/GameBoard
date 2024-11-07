@@ -1,12 +1,12 @@
 {% load static %}
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}MMORPG Fan Server{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    {% block extra_css %}{% endblock %}
 </head>
 <body>
 
@@ -36,19 +36,18 @@
             <a href="{% url 'email_confirmation' %}" style="color: #8a6d3b; font-weight: bold;">Подтвердите email</a> для полного доступа.
         </div>
         {% endif %}
+        
         {% if messages %}
-        <div class="notifications-container">
-            {% for message in messages %}
-                <div class="notification notification-{{ message.tags }}">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        </div>
+            <div class="notifications-container">
+                {% for message in messages %}
+                    <div class="notification notification-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
         {% endif %}
         
-
-    <!-- Основной контент -->
-    {% block content %}{% endblock %}
+        {% block content %}{% endblock %}
     </main>
     
     <script>
@@ -66,5 +65,7 @@
             });
         });
     </script>
+
+    {% block extra_js %}{% endblock %}
 </body>
 </html>

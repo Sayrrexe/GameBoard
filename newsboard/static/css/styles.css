@@ -126,7 +126,7 @@ body {
 	margin: auto;
 }
 
-.ads-section h1{
+.ads-section h1 {
 	text-align: center;
 }
 
@@ -297,7 +297,7 @@ body {
 	top: 50%;
 	transform: translateY(-50%);
 	left: 0;
-    text-align: center;
+	text-align: center;
 }
 
 .sidebar h2 {
@@ -605,6 +605,84 @@ body {
 
 .ad-footer p {
 	margin-left: 15px;
-    color: #e0e0e0;
-    font-family: Arial, sans-serif;
+	color: #e0e0e0;
+	font-family: Arial, sans-serif;
+}
+
+.modal {
+	display: none;
+	position: fixed;
+	z-index: 1000;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	background-color: rgba(0, 0, 0, 0.7);
+	text-align: center;
+}
+
+.modal-content {
+	background-color: #1e043a;
+	color: #ffffff;
+	margin: 10% auto;
+	padding: 20px;
+	border: 1px solid #888;
+	width: 80%;
+	max-width: 500px; /* Максимальная ширина */
+	border-radius: 8px;
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.close-button {
+	color: #ffffff;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+	cursor: pointer;
+}
+
+.close-button:hover,
+.close-button:focus {
+	color: #ff0000; /* Красный при наведении */
+	text-decoration: none;
+}
+
+.form-group {
+	margin-bottom: 15px;
+	margin-right: 20px;
+}
+
+.btn-primary {
+	background-color: #6a0dad; /* Темно-фиолетовый */
+	color: white;
+	border: none;
+	padding: 10px 20px;
+	cursor: pointer;
+	border-radius: 4px;
+	transition: background 0.3s;
+}
+
+.btn-primary:hover {
+	background-color: #9151ff;
+}
+
+.btn-secondary {
+	background-color: #4b0082; /* Индиго */
+	color: white;
+	border: none;
+	padding: 10px 20px;
+	cursor: pointer;
+	border-radius: 4px;
+	transition: background 0.3s;
+}
+
+.btn-secondary:hover {
+	background-color: #9151ff;
+}
+
+.error {
+	color: #ff0000;
+	font-size: 12px;
+	margin-top: 5px;
 }
