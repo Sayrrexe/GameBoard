@@ -104,28 +104,19 @@ def change_newsletter(request):
 
 class AdDetailView(DetailView):
     model = Ad
-    template_name = "ads/ad_detail.html"
+    template_name = 'ads/ad_detail.html'  # Шаблон для страницы объявления
     context_object_name = 'ad'
-
-    def get_queryset(self):
-        # Используем prefetch_related для оптимизации запросов
-        return Ad.objects.prefetch_related('media')
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
     
 @login_required
 def createView(request):
-    ad_id = request.GET.get('edit')  
-    ad_to_edit = None 
+    ad_id = request.GET.get('edit')
+    ad_to_edit = None
 
     if ad_id:
         ad_to_edit = get_object_or_404(Ad, id=ad_id, author=request.user)
         form = AdForm(request.POST or None, request.FILES or None, instance=ad_to_edit)
         if request.method == 'POST' and form.is_valid():
             form.save()
-            
             return redirect('index')
     else:
         form = AdForm(request.POST or None, request.FILES or None)
@@ -133,16 +124,12 @@ def createView(request):
             ad = form.save(commit=False)
             ad.author = request.user
             ad.save()
-            
             return redirect('index')
 
-    # Получаем объявления пользователя
     ads = Ad.objects.filter(author=request.user)
-
     context = {
         'form': form,
         'ads': ads,
         'ad_to_edit': ad_to_edit,
     }
     return render(request, 'ads/myads.html', context)
-

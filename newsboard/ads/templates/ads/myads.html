@@ -1,7 +1,4 @@
-<!-- ads/templates/ads/myads.html -->
-
 {% extends 'base.html' %}
-
 {% load static %}
 
 {% block content %}
@@ -10,9 +7,9 @@
 
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.as_p }}
-        
-        <button type="submit">
+        {{ form.media }}
+        {{ form.as_p }} 
+        <button type="submit" class="btn btn-primary">
             {% if ad_to_edit %} Сохранить изменения {% else %} Создать объявление {% endif %}
         </button>
     </form>
@@ -23,9 +20,10 @@
             {% for ad in ads %}
                 <div class="ad-card">
                     <h2>{{ ad.title }}</h2>
-                    <p>{{ ad.description|safe }}</p>
+                    <p>{{ ad.description|safe }}</p>  <!-- Вывод HTML-контента с поддержкой форматирования -->
                     <span class="category">{{ ad.category }}</span>
                     <span class="status">{{ ad.get_status_display }}</span>
+                    
                     {% if ad.media.exists %}
                         <div class="media-gallery">
                             {% for media in ad.media.all %}
@@ -39,7 +37,7 @@
                             {% endfor %}
                         </div>
                     {% endif %}
-                    <a href="?edit={{ ad.id }}">Редактировать</a>
+                    <a href="?edit={{ ad.id }}" class="btn btn-secondary">Редактировать</a>
                 </div>
             {% endfor %}
         </div>

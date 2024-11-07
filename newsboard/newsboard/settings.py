@@ -38,8 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'ads',
-    'ckeditor',
-    'ckeditor_uploader',
+    'django_ckeditor_5',
 ]
 
 MIDDLEWARE = [
@@ -127,20 +126,23 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / "static"]
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
-CKEDITOR_CONFIGS = {
+# settings.py
+# settings.py
+CKEDITOR_5_CONFIGS = {
     'default': {
-        'toolbar': 'Full',
+        'toolbar': 'full',
         'height': 300,
         'width': '100%',
         'extraPlugins': ','.join([
-            'uploadimage',  # Позволяет загружать изображения
-            'embed',        # Для встраивания видео
+            'uploadimage',  # Для загрузки изображений
+            'embed',        # Для вставки видео
             'autoembed',
             'embedsemantic',
-            # Добавьте другие плагины по необходимости
         ]),
     },
 }
+
+
 
 
 

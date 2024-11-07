@@ -22,7 +22,7 @@
             {% for ad in ads %}
                 <div class="ad-card">
                     <h2>{{ ad.title|truncatechars:30 }}</h2>
-                    <p>{{ ad.description|truncatewords:15|safe }}</p>
+                    <p>{{ ad.description|truncatewords:15|striptags }}</p>
                     <span class="category">{{ ad.category }}</span>
                     <div class="ad-footer">
                         {% if ad.author.avatar %}
@@ -31,7 +31,6 @@
                             <span class="username">Создал: {{ ad.author.username }}</span>
                         {% endif %}
                         
-                        <span class="username">{{ ad.author.username }}</span>
                     </div>
 
                     <a href="/ad/{{ ad.id }}" class="btn btn-primary full-width-btn">Подробнее</a>

@@ -1,9 +1,9 @@
 from django import forms
-from ckeditor_uploader.widgets import CKEditorUploadingWidget
+from django_ckeditor_5.widgets import CKEditor5Widget
 from .models import Ad
 
 class AdForm(forms.ModelForm):
-    description = forms.CharField(widget=CKEditorUploadingWidget())
+    description = forms.CharField(widget=CKEditor5Widget())
     
     class Meta:
         model = Ad

@@ -1,7 +1,8 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 import os
-from ckeditor_uploader.fields import RichTextUploadingField
+from django_ckeditor_5.fields import CKEditor5Field
+
 
 class CustomUser(AbstractUser):
     info = models.TextField(max_length=255, blank=True, null=True)
@@ -49,7 +50,7 @@ class Category(models.Model):
 
 class Ad(models.Model):
     title = models.CharField(max_length=200)
-    description = RichTextUploadingField()
+    description = CKEditor5Field()
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -59,10 +60,13 @@ class Ad(models.Model):
     def __str__(self):
         return self.title
     
+    
     class Meta:
         ordering = ['-created_at']
         verbose_name = 'Объявление'
         verbose_name_plural = 'Объявления'
+        
+    
         
 
     

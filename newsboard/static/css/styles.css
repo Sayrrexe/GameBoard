@@ -490,3 +490,50 @@ body {
 .btn-secondary:hover {
     background: #9151ff;
 }
+
+
+/* Основной контейнер */
+.main-container {
+    padding: 30px;
+    max-width: 800px;
+    margin: auto;
+    background-color: #1e1e1e;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+/* Заголовок объявления */
+.ad-detail h1 {
+    font-size: 32px;
+    color: #f3a5ff;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Метаданные (дата и автор) */
+.ad-meta {
+    color: #aaa;
+    font-size: 14px;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+/* Основной контент (описание) */
+.ad-content {
+    font-size: 16px;
+    color: #e0e0e0;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+/* Категория */
+.ad-category {
+    font-size: 16px;
+    color: #bbb;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.ad-category strong {
+    color: #f3a5ff;
+}

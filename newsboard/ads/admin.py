@@ -1,15 +1,14 @@
 from django.contrib import admin
 from .models import Ad, Category, CustomUser
 from django import forms
-from ckeditor_uploader.widgets import CKEditorUploadingWidget
+from django_ckeditor_5.widgets import CKEditor5Widget
 
 admin.site.register(Category)
 admin.site.register(CustomUser)
 
 
-
 class AdAdminForm(forms.ModelForm):
-    description = forms.CharField(widget=CKEditorUploadingWidget())
+    description = forms.CharField(widget=CKEditor5Widget())
     
     class Meta:
         model = Ad
