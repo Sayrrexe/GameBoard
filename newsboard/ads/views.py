@@ -14,7 +14,7 @@ def index(request):
             category = Category.objects.get(name=category_name)
             ads = Ad.objects.filter(category=category, status='published')
         except Category.DoesNotExist:
-            ads = Ad.objects.none()  # Если категории нет, не показывать объявления
+            ads = Ad.objects.none()  
     else:
         ads = Ad.objects.filter(status='published')
     categories = Category.objects.all()
@@ -29,7 +29,7 @@ def register(request):
         password = request.POST['password']
         confirm_password = request.POST['confirm_password']
         
-        # Проверка на уникальность username
+        
         if CustomUser.objects.filter(username__iexact=usernamecheck).exists():
             messages.error(request, "Имя пользователя уже занято")
             return render(request, 'ads/register.html')
@@ -74,7 +74,7 @@ def profile(request):
 
     if request.method == 'POST':
         if 'first_name' in request.POST:
-            # Обработка формы для редактирования профиля
+            
             user.first_name = request.POST['first_name']
             user.last_name = request.POST['last_name']
             user.email = request.POST['email']
@@ -90,7 +90,7 @@ def logout_view(request):
         logout(request)
         messages.info(request, "Вы вышли из аккаунта")
         
-        return redirect('index')  # Перенаправляем на главную страницу
+        return redirect('index')  
     
 def change_newsletter(request):
     user = request.user
@@ -104,7 +104,7 @@ def change_newsletter(request):
 
 class AdDetailView(DetailView):
     model = Ad
-    template_name = 'ads/ad_detail.html'  # Шаблон для страницы объявления
+    template_name = 'ads/ad_detail.html'  
     context_object_name = 'ad'
     
 @login_required

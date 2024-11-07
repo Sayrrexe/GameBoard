@@ -1,4 +1,3 @@
-<!-- ads/templates/ads/ad_detail.html -->
 {% extends 'base.html' %}
 
 {% block content %}
@@ -6,7 +5,8 @@
     <div class="ad-detail">
         <h1>{{ ad.title }}</h1>
         <p class="ad-meta">
-            Опубликовано: {{ ad.created_at|date:"d M Y" }} | Автор: {{ ad.author.username }}
+            Опубликовано: {{ ad.created_at|date:"d M Y" }} | Автор: {{ ad.author.username }} </br>
+            <strong>Категория:</strong> {{ ad.category }}
         </p>
 
         <div class="ad-content">
@@ -14,7 +14,7 @@
         </div>
 
         <div class="ad-category">
-            <strong>Категория:</strong> {{ ad.category }}
+            
         </div>
     </div>
 </div>

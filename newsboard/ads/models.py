@@ -14,7 +14,7 @@ class CustomUser(AbstractUser):
         return self.username
     
     def save(self, *args, **kwargs):
-        # Сохраняем старый аватар для последующего удаления
+        
         old_avatar = None
         if self.pk:
             try:
@@ -22,12 +22,12 @@ class CustomUser(AbstractUser):
             except CustomUser.DoesNotExist:
                 pass
         
-        # Генерация уникального имени файла, если загружается новый аватар
+        
         if self.avatar:
-            ext = os.path.splitext(self.avatar.name)[1]  # Получаем расширение файла
+            ext = os.path.splitext(self.avatar.name)[1]  
             self.avatar.name = f'avatar_{self.pk}{ext}'
         
-        # Удаляем старый файл, если он существует и загружается новый
+        
         if old_avatar and old_avatar != self.avatar:
             old_avatar.delete(save=False)
 
