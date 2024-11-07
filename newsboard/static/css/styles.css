@@ -126,6 +126,10 @@ body {
 	margin: auto;
 }
 
+.ads-section h1{
+	text-align: center;
+}
+
 .ads-grid {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
@@ -293,6 +297,7 @@ body {
 	top: 50%;
 	transform: translateY(-50%);
 	left: 0;
+    text-align: center;
 }
 
 .sidebar h2 {

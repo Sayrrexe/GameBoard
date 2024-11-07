@@ -4,8 +4,11 @@ from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 
+
+from .utils import create_confirmation_code
 from .forms import AdForm
 from .models import Ad, Category, CustomUser
+from .models import ConfirmationCode
 
 def index(request):
     category_name = request.GET.get('category')
@@ -44,27 +47,36 @@ def register(request):
         
         user = CustomUser.objects.create_user(username=username, email=email, password=password)
         login(request, user)
+        confirmation_code = create_confirmation_code(user)
         messages.success(request, "Регистрация успешна! Вы вошли в систему.")
+        
         return redirect('email_confirmation')
     
     return render(request, 'ads/register.html')
 
-
-
 def email_confirmation(request):
     if request.method == 'POST':
         code = request.POST.get('code')
+        user = request.user
         
-        # Проверка кода
-        if code == "123456":
-            user = request.user
-            user.is_email_verified = True
-            user.save()
-            messages.success(request, "Email успешно подтверждён!")
-            return redirect('index')
-        else:
+        try:
+            confirmation = ConfirmationCode.objects.get(user=user, code=code)
+            if confirmation.is_active() == True:
+                if confirmation.code == code:
+                # Подтверждение email и удаление кода после подтверждения
+                    user.is_email_verified = True
+                    user.save()
+                    confirmation.delete()  # Удаляем использованный код
+                    messages.success(request, "Email успешно подтверждён!")
+                    return redirect('index')
+            else:
+                messages.error(request, "Код подтверждения истёк. Запросите новый.")
+                confirmation.delete()  
+        except ConfirmationCode.DoesNotExist:
             messages.error(request, "Неправильный код подтверждения")
+    
     return render(request, 'ads/email_confirmation.html')
+
 
 
 def profile(request):

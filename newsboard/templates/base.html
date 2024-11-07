@@ -30,6 +30,12 @@
 
     <!-- Main Content -->
     <main>
+        {% if user.is_authenticated and not user.is_email_verified %}
+        <div class="alert alert-warning" style="text-align: center; margin: 20px; padding: 10px; border: 1px solid #f0ad4e; background-color: #fcf8e3; color: #8a6d3b;">
+            <strong>Внимание!</strong> Ваш email не подтверждён. 
+            <a href="{% url 'email_confirmation' %}" style="color: #8a6d3b; font-weight: bold;">Подтвердите email</a> для полного доступа.
+        </div>
+        {% endif %}
         {% if messages %}
         <div class="notifications-container">
             {% for message in messages %}
@@ -38,7 +44,8 @@
                 </div>
             {% endfor %}
         </div>
-    {% endif %}
+        {% endif %}
+        
 
     <!-- Основной контент -->
     {% block content %}{% endblock %}

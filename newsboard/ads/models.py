@@ -2,6 +2,8 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 import os
 from django_ckeditor_5.fields import CKEditor5Field
+from django.utils import timezone
+from datetime import timedelta
 
 
 class CustomUser(AbstractUser):
@@ -92,3 +94,15 @@ class Newsletter(models.Model):
     total_date = models.DateTimeField(null=False)
     sent = models.BooleanField(default=False)
 
+
+
+class ConfirmationCode(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="confirmation_codes")
+    code = models.CharField(max_length=6)
+    deactivation_time = models.DateTimeField()
+
+    def is_active(self):
+        return timezone.now() < self.deactivation_time
+
+    def __str__(self):
+        return f"Code for {self.user.username} - Expires at {self.deactivation_time}"
