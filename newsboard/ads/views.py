@@ -166,14 +166,13 @@ def submit_response(request, ad_id):
             response.sender = request.user
             response.status = 'pending'
             response.save()
-            print('email')
             # Отправка уведомления автору объявления
-            #send_mail(
-            #    subject='Новый отклик на ваше объявление',
-            #    message=f'Пользователь {request.user.username} оставил отклик на ваше объявление # {ad.title}".\n\nТекст отклика:\n{response.content}',
-            #    from_email='localhost@gmail.com',
-            #    recipient_list=[ad.author.email],
-            #    fail_silently=False,)
+            send_mail(
+                subject='Новый отклик на ваше объявление',
+                message=f'Пользователь {request.user.username} оставил отклик на ваше объявление # {ad.title}".\n\nТекст отклика:\n{response.content}',
+                from_email=None,
+                recipient_list=[ad.author.email],
+                fail_silently=False,)
             
             messages.success(request, "Ваш отклик успешно отправлен!")
             return redirect('ad_detail', pk=ad.id)
@@ -219,15 +218,15 @@ def my_ad_responses(request):
         response_to_accept.save()
         
         # Отправка уведомления пользователю, оставившему отклик
-        '''
+        
         send_mail(
             subject='Ваш отклик был принят',
             message=f'Ваш отклик на объявление "{response_to_accept.ad.title}" был принят.',
-            from_email=settings.DEFAULT_FROM_EMAIL,
+            from_email=None,
             recipient_list=[response_to_accept.sender.email],
             fail_silently=False,
         )
-        '''
+    
         messages.success(request, "Отклик успешно принят и уведомление отправлено.")
         return redirect('my_responses')
 
