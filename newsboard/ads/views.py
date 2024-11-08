@@ -1,30 +1,49 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.conf import settings
 from django.views.generic import DetailView
+from django.db.models import Q
+
+
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
-from django.conf import settings
 
 from .utils import create_confirmation_code
 from .forms import AdForm, ResponseForm
 from .models import Ad, Category, CustomUser, Response, ConfirmationCode
 
 
+from django.db.models import Q
+
+# Главная страница с объявлениями
 def index(request):
     category_name = request.GET.get('category')
+    search_query = request.GET.get('q')
+    
+    # Начальная фильтрация объявлений по статусу "опубликовано"
+    ads = Ad.objects.filter(status='published')
+
+    # Фильтрация по категории, если указана
     if category_name:
         try:
             category = Category.objects.get(name=category_name)
-            ads = Ad.objects.filter(category=category, status='published')
+            ads = ads.filter(category=category)
         except Category.DoesNotExist:
             ads = Ad.objects.none()  
-    else:
-        ads = Ad.objects.filter(status='published')
+    
+    # Фильтрация по поисковому запросу, если он указан
+    if search_query:
+        ads = ads.filter(
+            Q(title__icontains=search_query) | Q(description__icontains=search_query)
+        )
+
     categories = Category.objects.all()
     return render(request, 'ads/index.html', {'ads': ads, 'categories': categories})
 
 
+
+# Регистрация нового пользователя
 def register(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -33,28 +52,37 @@ def register(request):
         password = request.POST['password']
         confirm_password = request.POST['confirm_password']
         
-        
+        # Проверка уникальности имени пользователя и email
         if CustomUser.objects.filter(username__iexact=usernamecheck).exists():
             messages.error(request, "Имя пользователя уже занято")
             return render(request, 'ads/register.html')
 
-        if CustomUser.objects.filter(email = email).exists():
+        if CustomUser.objects.filter(email=email).exists():
             messages.error(request, "Данная почта уже занята!")
             return render(request, 'ads/register.html')
         
+        # Проверка совпадения паролей
         if password != confirm_password:
             messages.error(request, "Пароли не совпадают")
             return render(request, 'ads/register.html')
         
-        user = CustomUser.objects.create_user(username=username, email=email, password=password)
+        # Создание пользователя и вход в систему
+        
+        
+        try:
+            user = CustomUser.objects.create_user(username=username, email=email, password=password, is_active = False)
+        except Exception as e:
+            messages.error(request, f"Ошибка при создании пользователя: {str(e)}")
+            return render(request, 'ads/register.html')
+        
         login(request, user)
         confirmation_code = create_confirmation_code(user)
-        messages.success(request, "Регистрация успешна! Вы вошли в систему.")
         
         return redirect('email_confirmation')
     
     return render(request, 'ads/register.html')
 
+# Подтверждение email пользователя
 def email_confirmation(request):
     if request.method == 'POST':
         code = request.POST.get('code')
@@ -62,13 +90,14 @@ def email_confirmation(request):
         
         try:
             confirmation = ConfirmationCode.objects.get(user=user, code=code)
-            if confirmation.is_active() == True:
+            if confirmation.is_active():
                 if confirmation.code == code:
-                # Подтверждение email и удаление кода после подтверждения
                     user.is_email_verified = True
+                    user.is_active = True
                     user.save()
-                    confirmation.delete()  # Удаляем использованный код
+                    confirmation.delete()
                     messages.success(request, "Email успешно подтверждён!")
+                    messages.success(request, "Регистрация успешна! Вы вошли в систему.")
                     return redirect('index')
             else:
                 messages.error(request, "Код подтверждения истёк. Запросите новый.")
@@ -79,15 +108,13 @@ def email_confirmation(request):
     return render(request, 'ads/email_confirmation.html')
 
 
-
+# Профиль пользователя
+@login_required
 def profile(request):
-    if not request.user.is_authenticated:
-        return redirect('register')
     user = request.user
 
     if request.method == 'POST':
         if 'first_name' in request.POST:
-            
             user.first_name = request.POST['first_name']
             user.last_name = request.POST['last_name']
             user.email = request.POST['email']
@@ -98,13 +125,13 @@ def profile(request):
             return redirect('profile')
     return render(request, 'ads/profile.html')
 
-
+# Выход из аккаунта
 def logout_view(request):
-        logout(request)
-        messages.info(request, "Вы вышли из аккаунта")
-        
-        return redirect('index')  
-    
+    logout(request)
+    messages.info(request, "Вы вышли из аккаунта")
+    return redirect('index')  
+
+# Управление подпиской на рассылку
 def change_newsletter(request):
     user = request.user
     user.is_subscribed = not user.is_subscribed
@@ -113,18 +140,21 @@ def change_newsletter(request):
         messages.success(request, "Вы подписались на рассылку")
     else:
         messages.info(request, "Вы отписались от рассылки")
-    return redirect('profile')  
+    return redirect('profile')
 
+
+# Детализация объявления
 class AdDetailView(DetailView):
     model = Ad
-    template_name = 'ads/ad_detail.html'  
+    template_name = 'ads/ad_detail.html'
     context_object_name = 'ad'
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['form'] = ResponseForm()
         return context
-    
+
+# Создание и редактирование объявления
 @login_required
 def createView(request):
     ad_id = request.GET.get('edit')
@@ -142,7 +172,7 @@ def createView(request):
             ad = form.save(commit=False)
             ad.author = request.user
             ad.save()
-            messages.success('Вы успешно добавили новость!')
+            messages.success(request, "Вы успешно добавили новость!")
             return redirect('index')
 
     ads = Ad.objects.filter(author=request.user)
@@ -153,7 +183,7 @@ def createView(request):
     }
     return render(request, 'ads/myads.html', context)
 
-
+# Отклик на объявление
 @login_required
 def submit_response(request, ad_id):
     ad = get_object_or_404(Ad, id=ad_id, status='published')
@@ -166,15 +196,18 @@ def submit_response(request, ad_id):
             response.sender = request.user
             response.status = 'pending'
             response.save()
-            # Отправка уведомления автору объявления
-            send_mail(
-                subject='Новый отклик на ваше объявление',
-                message=f'Пользователь {request.user.username} оставил отклик на ваше объявление # {ad.title}".\n\nТекст отклика:\n{response.content}',
-                from_email=None,
-                recipient_list=[ad.author.email],
-                fail_silently=False,)
-            
-            messages.success(request, "Ваш отклик успешно отправлен!")
+            try:
+                send_mail(
+                    subject='Новый отклик на ваше объявление',
+                    message=f'Пользователь {request.user.username} оставил отклик на ваше объявление "{ad.title}".\n\nТекст отклика:\n{response.content}',
+                    from_email=None,
+                    recipient_list=[ad.author.email],
+                    fail_silently=False,
+                    
+                )
+                messages.success(request, "Ваш отклик успешно отправлен!")
+            except Exception as e:
+                messages.error(request, "Не удалось отправить email. Попробуйте позже.")
             return redirect('ad_detail', pk=ad.id)
         else:
             messages.error(request, "Пожалуйста, исправьте ошибки в форме.")
@@ -183,6 +216,7 @@ def submit_response(request, ad_id):
     
     return render(request, 'ads/submit_response.html', {'form': form, 'ad': ad})
 
+# Повторная отправка кода подтверждения email
 @login_required
 def resend_code_view(request):
     user = request.user
@@ -190,19 +224,17 @@ def resend_code_view(request):
     messages.info(request, 'Код отправлен на вашу почту')
     return redirect('email_confirmation')
 
-
+# Удаление и принятие откликов на объявления пользователя
 @login_required
 def my_ad_responses(request):
     user_ads = Ad.objects.filter(author=request.user)
     ad_id = request.GET.get('ad_id')  # Для фильтрации по конкретному объявлению
 
-    # Фильтрация откликов по выбранному объявлению, если ad_id передан
     if ad_id:
         responses = Response.objects.filter(ad__id=ad_id, ad__author=request.user)
     else:
         responses = Response.objects.filter(ad__in=user_ads)
 
-    # Удаление отклика
     if request.method == 'POST' and 'delete_response' in request.POST:
         response_id = request.POST.get('delete_response')
         response_to_delete = get_object_or_404(Response, id=response_id, ad__author=request.user)
@@ -210,14 +242,11 @@ def my_ad_responses(request):
         messages.success(request, "Отклик успешно удалён.")
         return redirect('my_responses')
 
-    # Принятие отклика
     if request.method == 'POST' and 'accept_response' in request.POST:
         response_id = request.POST.get('accept_response')
         response_to_accept = get_object_or_404(Response, id=response_id, ad__author=request.user)
         response_to_accept.status = 'accepted'
         response_to_accept.save()
-        
-        # Отправка уведомления пользователю, оставившему отклик
         
         send_mail(
             subject='Ваш отклик был принят',
@@ -235,3 +264,4 @@ def my_ad_responses(request):
         'responses': responses,
     }
     return render(request, 'ads/my_responses.html', context)
+

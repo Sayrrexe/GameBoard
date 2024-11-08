@@ -686,3 +686,51 @@ body {
 	font-size: 12px;
 	margin-top: 5px;
 }
+
+
+/* Стили для формы поиска */
+.search-form {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 20px;
+	margin-right: 10px; /* Отступ под формой */
+    width: 100%;
+}
+
+.search-form input[type="text"] {
+    flex-grow: 1;
+    padding: 10px;
+    border-radius: 6px;
+    background-color: #2a003c; /* Тёмно-фиолетовый фон */
+    color: #e0e0e0;
+    border: 1px solid #9151ff; /* Фиолетовая граница */
+    font-size: 12px;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    box-shadow: 0 0 8px rgba(145, 81, 255, 0.3); /* Тень вокруг поля */
+}
+
+.search-form input[type="text"]::placeholder {
+    color: #a6a6a6; /* Светло-серый текст для placeholder */
+}
+
+.search-form input[type="text"]:focus {
+    background-color: #3a0058; /* Более яркий оттенок при фокусе */
+    box-shadow: 0 0 12px rgba(145, 81, 255, 0.5); /* Усиленная тень при фокусе */
+    outline: none;
+}
+
+.search-form button {
+    padding: 10px 15px;
+    background: linear-gradient(135deg, #6a0dad, #b066ff); /* Фиолетовый градиент */
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Тень кнопки */
+}
+
+.search-form button:hover {
+    background: #9151ff; /* Ярче при наведении */
+    transform: scale(1.05);
+}

@@ -6,7 +6,7 @@ from django.utils import timezone
 from datetime import timedelta
 
 
-class CustomUser(AbstractUser):
+class CustomUser(AbstractUser): # расширенный пользователь
     info = models.TextField(max_length=255, blank=True, null=True)
     is_email_verified = models.BooleanField(default=False)
     avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
@@ -40,7 +40,7 @@ class CustomUser(AbstractUser):
         verbose_name_plural = 'Пользователи'
 
 
-class Category(models.Model):
+class Category(models.Model): # категории
     name = models.CharField(max_length=50)
 
     def __str__(self):
@@ -50,7 +50,7 @@ class Category(models.Model):
         verbose_name = 'Категория'
         verbose_name_plural = 'Категории'
 
-class Ad(models.Model):
+class Ad(models.Model): # объявления
     title = models.CharField(max_length=200)
     description = CKEditor5Field('Content', config_name='default')
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
@@ -72,7 +72,7 @@ class Ad(models.Model):
         
 
     
-class Response(models.Model):
+class Response(models.Model): # отклики
     ad = models.ForeignKey(Ad, on_delete=models.CASCADE, related_name='responses')
     sender = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     content = models.TextField()
@@ -87,7 +87,7 @@ class Response(models.Model):
         verbose_name = 'Отклик'
         verbose_name_plural = 'Отклики'
 
-class Newsletter(models.Model):
+class Newsletter(models.Model): # рассылка рекламы
     title = models.CharField(max_length=255)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
@@ -95,7 +95,7 @@ class Newsletter(models.Model):
 
 
 
-class ConfirmationCode(models.Model):
+class ConfirmationCode(models.Model): # код подтвержедния
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="confirmation_codes")
     code = models.CharField(max_length=6)
     deactivation_time = models.DateTimeField()

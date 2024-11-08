@@ -15,9 +15,7 @@
         <div class="logo">
             <a href="{% url 'index' %}">MMORPG Fan Server</a>
         </div>
-        <nav class="nav-links">
-            <a href="#">Поиск</a>
-        </nav>
+        
         <div class="auth-buttons">
             {% if user.is_authenticated %}
                 <a href="{% url 'profile' %}" class="btn">Личный кабинет</a>

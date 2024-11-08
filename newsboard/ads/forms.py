@@ -2,7 +2,7 @@ from django import forms
 from django_ckeditor_5.widgets import CKEditor5Widget
 from .models import Ad, Response
 
-class AdForm(forms.ModelForm):
+class AdForm(forms.ModelForm): # форма для создания объявлений
     description = forms.CharField(widget=CKEditor5Widget(config_name='default'))
     
     class Meta:
@@ -10,7 +10,7 @@ class AdForm(forms.ModelForm):
         fields = ['title', 'description', 'category', 'status']
         
         
-class ResponseForm(forms.ModelForm):
+class ResponseForm(forms.ModelForm):# форма для откликов
     class Meta:
         model = Response
         fields = ['content']

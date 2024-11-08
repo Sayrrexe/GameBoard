@@ -5,18 +5,30 @@
 {% block content %}
 <div class="main-container">
     <!-- Боковая панель с категориями -->
+    <!-- Боковая панель с категориями и поиском -->
     <aside class="sidebar">
+
+        <h2>Поиск</h2>
+        <form method="get" action="{% url 'index' %}" class="search-form">
+            <input type="text" name="q" placeholder="Поиск объявлений..." value="{{ request.GET.q }}">
+            <button type="submit">🔍</button>
+        </form>
+
         <h2>Категории</h2>
+    <!-- Список категорий -->
         <ul class="category-list">
             <li><a href="{% url 'index' %}">Все</a></li>
             {% for category in categories %}
                 <li><a href="{% url 'index' %}?category={{ category.name }}">{{ category.name }}</a></li>
             {% endfor %}
         </ul>
+        
     </aside>
+
 
     <!-- Секция с объявлениями -->
     <section class="ads-section">
+    {% if ads %}
         <h1>Объявления</h1>
         <div class="ads-grid">
             {% for ad in ads %}
@@ -38,6 +50,9 @@
                 </div>
             {% endfor %}
         </div>
+    {% else %}
+        <h1>Нет доступных объявлений по вашему запросу.</h1>
+    {% endif %}
     </section>
 </div>
 {% endblock %}

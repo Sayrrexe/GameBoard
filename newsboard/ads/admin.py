@@ -5,11 +5,11 @@ from django.contrib import messages
 from django import forms
 from django_ckeditor_5.widgets import CKEditor5Widget
 
-admin.site.register(Category)
-admin.site.register(CustomUser)
+admin.site.register(Category) # регестрация категорий в админке для создания сообственных
+admin.site.register(CustomUser) # пользователи в админке
 
 
-class AdAdminForm(forms.ModelForm):
+class AdAdminForm(forms.ModelForm): # создание сообственных объявлений через админку
     description = forms.CharField(widget=CKEditor5Widget())
     
     class Meta:
@@ -24,7 +24,7 @@ class AdAdmin(admin.ModelAdmin):
 
 admin.site.register(Ad, AdAdmin)
 
-@admin.register(Newsletter)
+@admin.register(Newsletter) # рассылка через админку
 class NewsletterAdmin(admin.ModelAdmin):
     list_display = ('title', 'created_at', 'sent')
     readonly_fields = ('created_at', 'sent')

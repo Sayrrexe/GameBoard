@@ -10,10 +10,16 @@ def create_confirmation_code(user):
     code = str(randint(100000, 999999))
     deactivation_time = timezone.now() + timedelta(minutes=15)
     confirmation = ConfirmationCode.objects.create(user=user, code=code, deactivation_time=deactivation_time)
-    send_mail(
-            subject='Ваш код',
-            message=f'Ваш код подтверждения: {code}. Он истекает через 15 минут!',
-            from_email=None,  
-            recipient_list=[user.email],
-        )
-    return confirmation
+    
+    # отправка сообщения с кодом
+    try:
+        send_mail(
+                subject='Ваш код',
+                message=f'Ваш код подтверждения: {code}. Он истекает через 15 минут!',
+                from_email=None,  
+                recipient_list=[user.email],
+            )
+        return True
+    except: 
+        return False
+    
