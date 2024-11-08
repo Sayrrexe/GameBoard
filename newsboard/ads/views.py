@@ -70,7 +70,7 @@ def register(request):
         
         
         try:
-            user = CustomUser.objects.create_user(username=username, email=email, password=password, is_active = False)
+            user = CustomUser.objects.create_user(username=username, email=email, password=password)
         except Exception as e:
             messages.error(request, f"Ошибка при создании пользователя: {str(e)}")
             return render(request, 'ads/register.html')

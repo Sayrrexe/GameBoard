@@ -1,3 +1,5 @@
+import logging
+
 from random import randint
 from django.utils import timezone
 from datetime import timedelta
@@ -20,6 +22,7 @@ def create_confirmation_code(user):
                 recipient_list=[user.email],
             )
         return True
-    except: 
+    except Exception as e: 
+        logging.error(f"Ошибка отправки письма для пользователя {user.id}: {e}")
         return False
     
