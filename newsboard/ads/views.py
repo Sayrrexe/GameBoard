@@ -97,7 +97,6 @@ def email_confirmation(request):
                     user.save()
                     confirmation.delete()
                     messages.success(request, "Email успешно подтверждён!")
-                    messages.success(request, "Регистрация успешна! Вы вошли в систему.")
                     return redirect('index')
             else:
                 messages.error(request, "Код подтверждения истёк. Запросите новый.")
