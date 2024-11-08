@@ -14,6 +14,6 @@ def create_confirmation_code(user):
     subject = "Ваш код подтверждения"
     message = f"Ваш код подтверждения: {code}. Он истекает через 15 минут."
     recipient_list = [user.email]
-    
-    send_mail(subject, message, settings.EMAIL_HOST_USER, recipient_list)
+    print('Созданн код для пользователя: ',{user}, ' - ', code)
+    #send_mail(subject, message, settings.EMAIL_HOST_USER, recipient_list)
     return confirmation

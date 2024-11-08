@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h1>Отклики на мои объявления</h1>
+    
+    <!-- Фильтр по объявлениям -->
+    <form method="get">
+        <label for="ad_id">Фильтр по объявлению:</label>
+        <select name="ad_id" id="ad_id" onchange="this.form.submit()">
+            <option value="">Все объявления</option>
+            {% for ad in user_ads %}
+                <option value="{{ ad.id }}" {% if ad.id|stringformat:"s" == request.GET.ad_id %}selected{% endif %}>{{ ad.title }}</option>
+            {% endfor %}
+        </select>
+    </form>
+    
+    <!-- Список откликов -->
+    <ul>
+        {% for response in responses %}
+            <li>
+                <h2>{{ response.ad.title }}</h2>
+                <p>Отправитель: {{ response.sender.username }}</p>
+                <p>Дата отклика: {{ response.created_at }}</p>
+                <p>Статус: {{ response.get_status_display }}</p>
+                <p>Текст отклика: {{ response.content }}</p>
+
+                <!-- Принятие отклика -->
+                {% if response.status == 'pending' %}
+                    <form method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" name="accept_response" value="{{ response.id }}">Принять</button>
+                    </form>
+                {% endif %}
+
+                <!-- Удаление отклика -->
+                <form method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" name="delete_response" value="{{ response.id }}">Удалить</button>
+                </form>
+                
+                <hr>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock content %}

@@ -15,4 +15,6 @@ urlpatterns = [
     path('ad/<int:pk>/', AdDetailView.as_view(), name='ad_detail'),
     path('create/', views.createView, name='create'),
     path('ad/<int:ad_id>/respond/', views.submit_response, name='submit_response'),  
+    path('email-confirmation/resend-confirmation-code', views.resend_code_view, name='resend_confirmation_code'),
+    path('my-responses/', views.my_ad_responses, name='my_responses'),
 ]

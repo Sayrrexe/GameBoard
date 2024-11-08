@@ -80,7 +80,7 @@ class Response(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self) -> str:
-        return self.sender
+        return f"{self.sender.username} - {self.ad.title}"
     
     class Meta:
         ordering = ['-created_at']

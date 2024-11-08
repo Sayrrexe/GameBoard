@@ -7,17 +7,15 @@
     <title>Подтверждение Email</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <style>
-        /* Центрирование по горизонтали и вертикали */
         body {
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;  /* Устанавливаем высоту на весь экран */
+            min-height: 100vh;
             margin: 0;
             background-color: #121212;
         }
 
-        /* Контейнер для страницы подтверждения email */
         .confirmation-container {
             max-width: 400px;
             margin: 0 auto;
@@ -38,7 +36,6 @@
             margin-bottom: 20px;
         }
 
-        /* Поля ввода */
         .form-group {
             margin-bottom: 20px;
         }
@@ -65,7 +62,6 @@
             box-shadow: 0 0 8px #6a0dad;
         }
 
-        /* Кнопка подтверждения */
         .btn-confirm {
             padding: 12px;
             width: 100%;
@@ -82,11 +78,24 @@
             background: #9151ff;
         }
 
-        /* Сообщения об ошибках */
         .error-message {
             color: #ff6666;
             font-size: 14px;
             margin-top: 10px;
+        }
+
+        /* Стили для ссылки повторной отправки */
+        .resend-link {
+            color: #6a0dad;
+            cursor: pointer;
+            display: inline-block;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .resend-link.disabled {
+            color: #555;
+            pointer-events: none;
         }
     </style>
 </head>
@@ -112,8 +121,47 @@
             {% endfor %}
         </ul>
     {% endif %}
+
+    <a href="{% url 'resend_confirmation_code' %}" class="resend-link" id="resendLink">Отправить код повторно</a>
 </div>
+
+<script>
+    // JavaScript для управления ссылкой повторной отправки кода
+    const resendLink = document.getElementById('resendLink');
+    const resendInterval = 60; // Интервал в секундах
+
+    resendLink.addEventListener('click', function(event) {
+        event.preventDefault(); // Отключаем стандартное поведение ссылки
+
+        // Блокируем ссылку и начинаем отсчёт
+        resendLink.classList.add('disabled');
+        resendLink.textContent = `Подождите ${resendInterval} секунд`;
+
+        let timeLeft = resendInterval;
+        const countdown = setInterval(() => {
+            timeLeft -= 1;
+            resendLink.textContent = `Подождите ${timeLeft} секунд`;
+
+            if (timeLeft <= 0) {
+                clearInterval(countdown);
+                resendLink.classList.remove('disabled');
+                resendLink.textContent = 'Отправить код повторно';
+            }
+        }, 1000);
+
+        // Выполняем запрос на повторную отправку кода (здесь можно использовать fetch или AJAX)
+        fetch("{% url 'resend_confirmation_code' %}", {
+            method: 'GET',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Не удалось отправить код');
+        })
+        .catch(error => console.error(error));
+    });
+</script>
 
 </body>
 </html>
-
