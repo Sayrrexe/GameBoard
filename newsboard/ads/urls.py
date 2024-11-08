@@ -1,5 +1,5 @@
 from django.urls import path
-from django.contrib.auth.views import LoginView
+
 from .views import AdDetailView
 from . import views
 
@@ -8,7 +8,7 @@ urlpatterns = [
     path('', views.index, name='index'),
     # регестрация и авторизация
     path('register/', views.register, name='register'),
-    path('login/', LoginView.as_view(template_name='ads/login.html'), name='login'),
+    path('login/', views.login_view, name='login'),
     # подтвержедение почты
     path('email-confirmation/', views.email_confirmation, name='email_confirmation'),
     path('email-confirmation/resend-confirmation-code', views.resend_code_view, name='resend_confirmation_code'),
