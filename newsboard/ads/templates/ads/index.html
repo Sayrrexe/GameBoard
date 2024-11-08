@@ -33,7 +33,7 @@
         <div class="ads-grid">
             {% for ad in ads %}
                 <div class="ad-card">
-                    <h2>{{ ad.title|truncatechars:30 }}</h2>
+                    <h2>{{ ad.title|truncatewords:10 }}</h2>
                     <p>{{ ad.description|truncatewords:15|striptags }}</p>
                     <span class="category">{{ ad.category }}</span>
                     <div class="ad-footer">
