@@ -16,8 +16,8 @@
 
 ### Шаг 1: Клонирование репозитория
 ```bash
-git clone <URL-репозитория>
-cd <название-папки-с-проектом>
+git clone https://github.com/Sayrrexe/GameBoard.git
+cd GameBoard
 ```
 
 ### Шаг 2: Создание виртуального окружения и установка зависимостей
